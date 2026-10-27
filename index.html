@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Administrative File Movement System | Official</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<div class="topbar"><span>NIGERIA IMMIGRATION SERVICE &nbsp;|&nbsp; ADMINISTRATIVE FILE MOVEMENT SYSTEM</span><span id="clock"></span></div>
+<header><div class="headInner"><div class="brand"><div class="crest"></div><div><h1>INTERPOL ADMINISTRATIVE FILE MOVEMENT</h1><p>OFFICIAL REGISTRY &nbsp;•&nbsp; FILE TRACKING &nbsp;•&nbsp; CONFIDENTIAL</p></div></div><div class="headRight"><div class="userBox"><small>LOGGED IN AS</small><b id="topUser">GUEST</b></div><div class="stamp">OFFICIAL<br>USE ONLY</div></div></div>
+<nav><button class="active" onclick="go('home',this)">HOME</button><button onclick="go('incoming',this)">INCOMING MAIL</button><button onclick="openFieldLogin('CREAT_FILE')">CREAT FILE</button><button onclick="openFieldLogin('FILE_MOVEMENT')">FILE MOVEMENT</button><button onclick="go('searchPage',this)">SEARCH</button><button onclick="openAdminLogin()">ADMIN</button></nav></header>
+
+<section id="home" class="page active">
+<div class="dashHead"><div><h2>Executive Dashboard</h2><p>Summary of all registry activities - Live from Google Sheets Database</p></div><span class="live">● LIVE DATABASE</span></div>
+<div class="statsMature"><div><label>INCOMING MAILS</label><b id="sMail">0</b><span>Registered</span></div><div><label>FILES CREATED</label><b id="sFile">0</b><span>Active Files</span></div><div><label>MOVEMENTS</label><b id="sMove">0</b><span>In / Out</span></div><div><label>DEEP FILES</label><b id="sDeep">0</b><span>Archived</span></div></div>
+<div class="twoCol"><div class="card"><div class="cardHead"><h3>RECENT INCOMING MAILS</h3><a onclick="go('incoming',document.querySelectorAll('nav button')[1])">View All →</a></div><div id="homeMails"></div></div><div class="card"><div class="cardHead"><h3>RECENT FILES</h3><a onclick="openFieldLogin('CREAT_FILE')">Create File →</a></div><div id="homeFiles"></div></div></div>
+</section>
+
+<section id="incoming" class="page">
+<div class="pageHeadM"><h2>INCOMING MAIL REGISTER</h2><p>All mails received must be registered immediately</p></div>
+<div class="card"><label>SEARCH BY MAIL REFERENCE NUMBER</label><div class="searchBox"><input id="mailSearch" placeholder="Enter Mail Reference Number e.g. CB:0000/000/.."><button class="btnDark" onclick="loadMails()">SEARCH</button></div></div>
+<div class="card"><h3 class="formTitle">REGISTER NEW MAIL</h3><div class="grid2"><div><label>MAIL REFERENCE NUMBER *</label><input id="mRef"></div><div><label>MAIL NAME *</label><input id="mName"></div><div><label>ORIGINATING AGENCY *</label><input id="mAgency"></div><div><label>DATE</label><input id="mDate" type="date"></div><div><label>TIME</label><input id="mTime" type="time"></div></div><button class="btnGold full" onclick="saveMail()">SAVE MAIL →</button></div>
+<div class="card"><h3>MAIL REGISTER</h3><div id="mailList"></div></div>
+</section>
+
+<section id="createFile" class="page">
+<div class="pageHeadM"><h2>CREAT FILE <span class="welcome" id="welcomeCreate"></span></h2><button class="btnLight" onclick="logoutField()">LOGOUT</button></div>
+<div class="twoCol"><div class="card"><h3 class="formTitle">OPEN NEW FILE</h3><label>FILE NUMBER *</label><input id="fNo" placeholder="NIS/HQ/I&C/INT/POL/00"><label>FILE NAME *</label><input id="fName"><label>MAIL REFERENCE NUMBER *</label><input id="fMailRef"><label>MAIL NAME *</label><input id="fMailName"><label>DATE CREATED</label><input id="fDate" type="date"><label>ASSIGNED OFFICER *</label><input id="fOfficer"><button class="btnGold full" onclick="saveFile()">SAVE FILE</button></div><div class="card"><h3>FILE REGISTER - CLICK ANY FILE TO VIEW MAILS</h3><div id="fileList"></div><div id="fileDetail"></div></div></div>
+</section>
+
+<section id="movement" class="page">
+<div class="pageHeadM"><h2>FILE MOVEMENT REGISTER <span class="welcome" id="welcomeMove"></span></h2><button class="btnLight" onclick="logoutField()">LOGOUT</button></div>
+<div class="tabs"><button onclick="showMoveTab('INCOMING')">INCOMING FILE</button><button onclick="showMoveTab('OUTGOING')">OUTGOING FILE</button><button onclick="showMoveTab('DEEP')">DEEP FILES</button></div>
+<div id="moveBox"></div><div class="card"><h3>MOVEMENT HISTORY</h3><div id="moveList"></div></div>
+</section>
+
+<section id="searchPage" class="page">
+<div class="pageHeadM"><h2>SEARCH FILE MOVEMENT</h2><p>Read Only - History cannot be edited</p></div>
+<div class="card"><label>FILE NUMBER</label><input id="sFileNo" placeholder="NIS/HQ/I&C/INT/POL/000"><label>FILTER TYPE</label><select id="sFilter"><option>Incoming File</option><option>Outgoing File</option><option>Deep Files</option></select><button class="btnGold full" onclick="doSearch()">SEARCH FILE</button><div id="searchResult"></div></div>
+</section>
+
+<section id="adminPage" class="page">
+<div class="pageHeadM"><h2>ADMINISTRATION <span class="welcome" id="welcomeAdmin"></span></h2><button class="btnLight" onclick="go('home',document.querySelectorAll('nav button')[0])">LOGOUT</button></div>
+<div class="tabs"><button onclick="showAdminTab('ISSUE')">ISSUE ACCESS</button><button onclick="showAdminTab('SHOW')">SHOW LOGINS</button><button onclick="showAdminTab('RESET')">RESET PASSWORD</button></div>
+<div id="adminBox"></div>
+</section>
+
+<div id="loginModal" class="modal"><div class="mBox"><div class="mHead">SECURE LOGIN</div><h3 id="loginTitle">Login</h3><p class="mSub" id="loginSub">Default Admin Password: admin123</p><label>LOGIN NAME</label><input id="loginName"><label>PASSWORD</label><input id="loginPass" type="password"><button class="btnDark full" onclick="doFieldLogin()">ENTER →</button><button class="btnLight full" onclick="hideModals()">CANCEL</button></div></div>
+<div id="adminModal" class="modal"><div class="mBox"><div class="mHead">ADMIN LOGIN - RESTRICTED</div><h3>Administrator</h3><label>ADMIN NAME</label><input id="adminName"><label>PASSWORD</label><input id="adminPass" type="password"><button class="btnDark full" onclick="doAdminLogin()">ENTER →</button><button class="btnLight full" onclick="hideModals()">CANCEL</button></div></div>
+<footer>ADMINISTRATIVE FILE MOVEMENT SYSTEM &nbsp;|&nbsp; CONFIDENTIAL - FOR OFFICIAL USE ONLY &nbsp;|&nbsp; Version 2026 &nbsp;&nbsp;
+<script src="script.js"></script></body></html>
